@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -54,21 +54,6 @@ class SignupPage extends StatelessWidget {
                 ],
               ),
               Container(
-                padding: EdgeInsets.only(top: 3,left: 3),
-                decoration:
-                BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  border: Border(
-                    bottom: BorderSide(color: Colors.black),
-                    top: BorderSide(color: Colors.black),
-                    right: BorderSide(color: Colors.black),
-                    left: BorderSide(color: Colors.black),
-
-
-
-
-                  )
-                ),
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 60,
@@ -93,7 +78,7 @@ class SignupPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text("Already have an account?"),
-                  Text("Login", style: TextStyle(
+                  Text(" Login", style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 18
                   ),

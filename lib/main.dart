@@ -1,9 +1,8 @@
-import 'dart:html';
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:signup_page/login.dart';
 import 'package:signup_page/signup.dart';
 
 void main() {
@@ -46,6 +45,7 @@ class HomePage extends StatelessWidget {
                   Text("Get Your Dream Dog", textAlign: TextAlign.center, style: TextStyle(
                     color: Colors.grey[700],
                     fontSize: 15,
+                    fontWeight: FontWeight.bold,
 
                   ),)
                 ],
@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder:(context) => LogInPage()));
+                      Navigator.push(context, MaterialPageRoute(builder:(context) => SignupPage()));
                     },
                     //defining the shape
                     shape: RoundedRectangleBorder(
