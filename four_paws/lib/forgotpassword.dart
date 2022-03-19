@@ -1,24 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:four_paws/forgotpassword.dart';
 
 import 'login.dart';
 
 
 
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class ForgotPassword extends StatefulWidget {
+  const ForgotPassword({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _ForgotPasswordState createState() => _ForgotPasswordState();
 
 }
 
-class _LoginPageState extends State<LoginPage> {
-  late String username,password;
-  bool _isHidden = true;
-
+class _ForgotPasswordState extends State<ForgotPassword> {
+  late String username,newpassword,confirmpassword;
 
 
 
@@ -33,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.black,), onPressed: () {
-            Navigator.pop(context,LoginScreen());
+          Navigator.pop(context,LoginScreen());
         },
 
         ),
@@ -42,9 +39,9 @@ class _LoginPageState extends State<LoginPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Padding(
-            padding:EdgeInsets.symmetric(vertical: 30),
-            child: Text("Log In",
+          const Padding(
+            padding:EdgeInsets.symmetric(vertical: 20),
+            child: Text("Forgot Password",
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
@@ -53,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
 
           Padding(
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(10),
             child:TextFormField(
               keyboardType:TextInputType.text,
               onChanged: (value) {
@@ -69,40 +66,42 @@ class _LoginPageState extends State<LoginPage> {
 
 
           Padding(
-            padding:EdgeInsets.all(8),
+            padding:EdgeInsets.all(10),
             child:TextFormField(
               keyboardType:TextInputType.text,
-              obscureText:_isHidden ,
+              obscureText:true ,
               onChanged: (value) {
                 setState(() {
-                  password=value;
+                  newpassword=value;
                 });
               },
               decoration: InputDecoration(
-                hintText: 'Password',
-                suffixIcon:InkWell(
-                    onTap: _togglePasswordView,
-                    child: Icon(_isHidden ? Icons.visibility_off :Icons.visibility)),
+                hintText: 'New Password',
+
+
+              ),
+            ),
+          ),
+
+          Padding(
+            padding:EdgeInsets.all(10),
+            child:TextFormField(
+              keyboardType:TextInputType.text,
+              obscureText:true ,
+              onChanged: (value) {
+                setState(() {
+                  confirmpassword=value;
+                });
+              },
+              decoration: InputDecoration(
+                hintText: 'Confirm Password',
+
 
               ),
             ),
           ),
 
 
-          Container(
-            alignment: Alignment.topRight,
-            margin: EdgeInsets.only(right: 20),
-            child: FlatButton(
-              onPressed: () {
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => ForgotPassword(),),
-                );
-              },
-              child: Text('Forgot password?', style: TextStyle(fontSize:18,
-                  fontWeight: FontWeight.w600),),
-
-            ),
-          ),
 
           Container(
             padding:EdgeInsets.symmetric(vertical: 20),
@@ -118,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
 
               child: Text(
-                "Log In", style: TextStyle(
+                "Update Password", style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18,
                 color: Colors.white,
@@ -134,10 +133,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  void _togglePasswordView() {
-    setState(() {
-      _isHidden = !_isHidden;
-    });
-  }
+
 
 }
