@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,8 @@ class ForgotPassword extends StatefulWidget {
 }
 
 class _ForgotPasswordState extends State<ForgotPassword> {
-  late String username,newpassword,confirmpassword;
+  late String username;
+  TextEditingController _emailTextController = TextEditingController();
 
 
 
@@ -52,56 +54,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           Padding(
             padding: EdgeInsets.all(10),
             child:TextFormField(
-              keyboardType:TextInputType.text,
-              onChanged: (value) {
-                setState(() {
-                  username=value;
-                });
-              },
+              controller: _emailTextController,
               decoration: InputDecoration(
-                hintText: 'Username',
+                hintText: 'Enter Your Email',
               ),
             ) ,
           ),
-
-
-          Padding(
-            padding:EdgeInsets.all(10),
-            child:TextFormField(
-              keyboardType:TextInputType.text,
-              obscureText:true ,
-              onChanged: (value) {
-                setState(() {
-                  newpassword=value;
-                });
-              },
-              decoration: InputDecoration(
-                hintText: 'New Password',
-
-
-              ),
-            ),
-          ),
-
-          Padding(
-            padding:EdgeInsets.all(10),
-            child:TextFormField(
-              keyboardType:TextInputType.text,
-              obscureText:true ,
-              onChanged: (value) {
-                setState(() {
-                  confirmpassword=value;
-                });
-              },
-              decoration: InputDecoration(
-                hintText: 'Confirm Password',
-
-
-              ),
-            ),
-          ),
-
-
 
           Container(
             padding:EdgeInsets.symmetric(vertical: 20),
@@ -109,7 +67,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             child: MaterialButton(
               minWidth:350,
               height: 60,
-              onPressed: () {},
+              onPressed: () {
+                FirebaseAuth.instance.sendPasswordResetEmail(email: _emailTextController.text)
+                .then((value) => Navigator.pop(context));
+
+              },
               color: Color(0xff0095FF),
               elevation: 0,
               shape: RoundedRectangleBorder(
@@ -117,7 +79,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
 
               child: Text(
-                "Update Password", style: TextStyle(
+                "Reset Password", style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 18,
                 color: Colors.white,
