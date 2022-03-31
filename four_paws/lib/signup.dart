@@ -1,8 +1,15 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:four_paws/home.dart';
 import 'package:four_paws/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:four_paws/userpage.dart';
 class SignupPage extends StatelessWidget {
+  TextEditingController _passwordTextController = TextEditingController();
+  TextEditingController _emailTextController = TextEditingController();
+  TextEditingController _usernameTextController = TextEditingController();
+  bool _validate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +34,7 @@ class SignupPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 40),
-          height: MediaQuery.of(context).size.height -50,
+          height: MediaQuery.of(context).size.height -100,
           width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -39,26 +46,60 @@ class SignupPage extends StatelessWidget {
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 10,),
                   Text("Create an account, It's free,",
                   style: TextStyle(
                     fontSize: 15,
                     color: Colors.grey[700]),)
                 ],
+              ),Container(
+                padding: const EdgeInsets.all(0),
+                child: TextField(
+                  controller: _usernameTextController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter a User Name',
+                  ),
+                ),
               ),
-              Column(
-                children: <Widget>[
-                  inputFile(label: "Username"),
-                  inputFile(label: "Email"),
-                  inputFile(label: "Password", obscureText: true),
-                  inputFile(label: "Confirm Password",obscureText: true),
-                ],
+              Container(
+                padding: const EdgeInsets.all(0),
+                child: TextField(
+                  controller: _emailTextController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter your E-mail',
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: TextField(
+                  obscureText: true,
+                  controller: _passwordTextController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Password',
+                    // errorText: _validate ? "Password Can't Be Empty" : null,
+                  ) ,
+                ),
               ),
               Container(
                 child: MaterialButton(
                   minWidth: double.infinity,
                   height: 60,
                   onPressed: () {
+                    if(_passwordTextController.text.isNotEmpty&&_usernameTextController.text.isNotEmpty&&_emailTextController.text.isNotEmpty){
+                      print(_passwordTextController.text);
+                      FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailTextController.text,
+                          password: _passwordTextController.text).then((value) {
+                            Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => UserPage()));
+                            print("Register SuccessFull!");
+                      }) ;
+                    }else {
+                      _validate = true;
+                    }
 
                   },
                   color: Color(0xff0095FF),

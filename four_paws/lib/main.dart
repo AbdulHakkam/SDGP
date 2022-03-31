@@ -8,16 +8,21 @@ import 'package:four_paws/settings.dart';
 import 'package:four_paws/shelterpage.dart';
 import 'package:four_paws/signup.dart';
 import 'package:four_paws/userpage.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
       //appbar settings
       appBarTheme: AppBarTheme(
-        iconTheme: IconThemeData(
-          color: Colors.black,
-        )),
+          iconTheme: IconThemeData(
+        color: Colors.black,
+      )),
       //primarySwatch: Colors.blue;
     ),
     home: HomePage(),
@@ -54,68 +59,67 @@ class HomePage extends StatelessWidget {
                   SizedBox(
                     height: 20,
                   ),
-                  Text("Get Your Dream Dog", textAlign: TextAlign.center, style: TextStyle(
-                    color: Colors.grey[700],
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-
-                  ),)
+                  Text(
+                    "Get Your Dream Dog",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
                 ],
               ),
               Container(
-                height: MediaQuery.of(context).size.height /3,
+                height: MediaQuery.of(context).size.height / 3,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/welcome.png"),
-                  )
-                ),
+                    image: DecorationImage(
+                  image: AssetImage("assets/welcome.png"),
+                )),
               ),
-
               Column(
                 children: <Widget>[
                   //The login button
                   MaterialButton(
                     minWidth: double.infinity,
                     height: 60,
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder:(context) => LoginScreen()));
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
                     },
                     //defining the shape
                     shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        color: Colors.black
-                      ),
-                      borderRadius: BorderRadius.circular(50)
-                      ),
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18
+                        side: BorderSide(color: Colors.black),
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Text(
+                      "Login",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                     ),
-                   ),
                   ),
                   //Creating the Signup button
                   SizedBox(height: 20),
                   MaterialButton(
-                    minWidth: double.infinity,
-                    height: 60,
-                    onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SignupPage()));
-                    },
-                    color: Color(0xff0095FF),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50)
-                    ),
-                    child: Text(
-                      "Sign Up",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18
-                      ),
-                    )
-                  ),
+                      minWidth: double.infinity,
+                      height: 60,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignupPage()));
+                      },
+                      color: Color(0xff0095FF),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18),
+                      )),
                 ],
               )
             ],
@@ -125,6 +129,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-
-

@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:four_paws/forgotpassword.dart';
+import 'package:four_paws/userpage.dart';
 
 import 'login.dart';
 
@@ -18,6 +20,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   late String username,password;
   bool _isHidden = true;
+  TextEditingController _emailTextController = TextEditingController();
+  TextEditingController _passwordTextController = TextEditingController();
 
 
 
@@ -55,12 +59,13 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: EdgeInsets.all(8),
             child:TextFormField(
-              keyboardType:TextInputType.text,
-              onChanged: (value) {
-                setState(() {
-                  username=value;
-                });
-              },
+              controller: _emailTextController,
+              // keyboardType:TextInputType.text,
+              // onChanged: (value) {
+              //   setState(() {
+              //     username=value;
+              //   });
+              // },
               decoration: InputDecoration(
                 hintText: 'Username',
               ),
@@ -71,7 +76,8 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding:EdgeInsets.all(8),
             child:TextFormField(
-              keyboardType:TextInputType.text,
+              controller: _passwordTextController,
+              // keyboardType:TextInputType.text,
               obscureText:_isHidden ,
               onChanged: (value) {
                 setState(() {
@@ -110,7 +116,14 @@ class _LoginPageState extends State<LoginPage> {
             child: MaterialButton(
               minWidth:350,
               height: 60,
-              onPressed: () {},
+              onPressed: () {
+                FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: _emailTextController.text, 
+                    password: _passwordTextController.text);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UserPage()));
+                // print(_emailTextController.text +" " + _passwordTextController.text );
+              },
               color: Color(0xff0095FF),
               elevation: 0,
               shape: RoundedRectangleBorder(
