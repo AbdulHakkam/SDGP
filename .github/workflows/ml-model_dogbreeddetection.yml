@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'DogBreedDetection'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_382568B69B4C4E14BD119C6A2B6EB4F6 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_392AC138A72542518C6A1980DA2208EA }}
