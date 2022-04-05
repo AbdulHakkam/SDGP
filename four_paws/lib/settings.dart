@@ -38,8 +38,6 @@ class _SettingPageUIState extends State<SettingPageUI> {
             Divider(height: 20, thickness: 1),
             SizedBox(height: 10),
             buildAccountOption(context, "Change Profile Info"),
-            buildAccountOption(context, "Find a Shelter"),
-            buildAccountOption(context, "Report a dog"),
             SizedBox(height: 50),
             Center(
               child: OutlinedButton(
