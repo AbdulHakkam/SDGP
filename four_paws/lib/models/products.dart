@@ -18,8 +18,8 @@ List<Product> products = [
     id: 1,
     title: "Pomeranian",
     description: "Cotton ia an active, smart, female dog "
-        "who enjoys playing with his human family and responds well to traning. ",
-    image: "assets/pug.jpg",),
+        "who enjoys playing with his human family and responds well to training. ",
+    image: "assets/Pomeranian.png",),
 
   Product(
     id: 2,

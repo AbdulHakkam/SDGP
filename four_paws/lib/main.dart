@@ -25,7 +25,7 @@ void main() async {
       )),
       //primarySwatch: Colors.blue;
     ),
-    home: HomePage(),
+    home: HomeScreen(),
   ));
 }
 

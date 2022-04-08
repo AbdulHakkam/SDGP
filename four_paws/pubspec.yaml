@@ -64,13 +64,12 @@ flutter:
      - assets/userimage.png
      - assets/welcome.png
      - assets/main.png
-     - assets/pomeranian.png
      - assets/labrador.png
      - assets/husky.png
      - assets/GoldenRetriver.png
      - assets/GermanShepherd.png
-     - assets/pug.jpg
      - assets/Doberman.png
+     - assets/pomeranian.png
 
   #   - images/a_dot_ham.jpeg
 
