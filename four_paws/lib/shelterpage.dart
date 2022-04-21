@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:four_paws/main.dart';
 
 import 'editshelterprofile.dart';
 
@@ -30,7 +31,9 @@ class _ShelterScreenState extends State<ShelterPage> {
           backgroundColor: Colors.blueAccent,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios, color: Colors.white,),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context,HomePage());
+            },
 
           ),
 

@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:four_paws/adoptreport.dart';
 import 'package:four_paws/home.dart';
+import 'package:four_paws/login.dart';
 import 'package:four_paws/signup.dart';
 import 'package:flutter/material.dart';
-import 'package:four_paws/userpage.dart';
+
 class SignupPage extends StatelessWidget {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
@@ -94,7 +96,7 @@ class SignupPage extends StatelessWidget {
                       FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailTextController.text,
                           password: _passwordTextController.text).then((value) {
                             Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => UserPage()));
+                            MaterialPageRoute(builder: (context) => LoginScreen()));
                             print("Register SuccessFull!");
                       }) ;
                     }else {
