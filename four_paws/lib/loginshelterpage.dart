@@ -113,11 +113,21 @@ class _LoginShelterPageState extends State<LoginShelterPage> {
               minWidth: 350,
               height: 60,
               onPressed: () {
-                FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: _emailTextController.text,
-                    password: _passwordTextController.text);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ShelterPage()));
+                FirebaseAuth.instance
+                    .signInWithEmailAndPassword(
+                        email: _emailTextController.text,
+                        password: _passwordTextController.text)
+                    .then((UserCredential) => {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ShelterPage()))
+                        })
+                    .catchError((error) =>
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("Email or Password incorrect"),
+                          duration: const Duration(seconds: 3),
+                        )));
                 // print(_emailTextController.text +" " + _passwordTextController.text );
               },
               color: Color(0xff0095FF),
