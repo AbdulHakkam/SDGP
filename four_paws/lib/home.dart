@@ -93,10 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(
                           width: 18,
                         ),
-                        Text(arrData[index]["Discription"].length > 15
-                            ? arrData[index]["Discription"].substring(0, 15) +
-                                "...."
-                            : "Name : " + arrData[index]["Discription"]),
+                        Text(arrData[index]["Breed"].length > 15
+                            ? arrData[index]["Breed"].substring(0, 15) + "...."
+                            : "Breed : " + arrData[index]["Breed"]),
                         // Text("\n" + arrData[index]["City"]),
                       ],
                     ),

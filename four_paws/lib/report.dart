@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,6 +8,8 @@ import 'package:four_paws/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class ReportScreen extends StatefulWidget {
   @override
@@ -22,12 +25,15 @@ class _ReportState extends State<ReportScreen> {
   late String namenote;
   String imageName = "";
   XFile? imagePath;
+  File? imagetocheck;
   final ImagePicker _picker = ImagePicker();
   String SelectedFileName = "";
   bool _isloading = false;
   var addressController = new TextEditingController();
   var ColourController = new TextEditingController();
   var CityController = new TextEditingController();
+  var responseData;
+  var breed;
 
   @override
   Widget build(BuildContext context) {
@@ -67,9 +73,16 @@ class _ReportState extends State<ReportScreen> {
                   SizedBox(
                     height: 15,
                   ),
+                  // OutlinedButton(onPressed: () {}, child: Text("check brred")),
                   SelectedFileName == ""
                       ? Container()
-                      : Text("File Name : " + SelectedFileName),
+                      : Text(
+                          "File Selected",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   TextFormField(
                     controller: ColourController,
                     minLines: 1,
@@ -103,7 +116,13 @@ class _ReportState extends State<ReportScreen> {
                   ),
                   ElevatedButton.icon(
                       onPressed: () {
-                        _uploadImage();
+                        checkbreed();
+
+                        if (breed != "") {
+                          _uploadImage();
+                        } else {
+                          _showmessage("Unable to find breed");
+                        }
                       },
                       icon: Icon(Icons.cloud_upload),
                       label: Text("Upload Image"))
@@ -117,9 +136,11 @@ class _ReportState extends State<ReportScreen> {
   imagePicker() async {
     final XFile? img = await _picker.pickImage(source: ImageSource.gallery);
     if (img != null) {
+      imagetocheck = File(img.path);
       setState(() {
         imagePath = img;
         SelectedFileName = img.name.toString();
+        // imagetocheck = File(img.path);
       });
     }
   }
@@ -147,8 +168,7 @@ class _ReportState extends State<ReportScreen> {
       // insert record to the database regarding url and image
       if (uploadpath.isNotEmpty) {
         firestoreRef.collection(collectionName).doc(uniqueKey.id).set({
-          "Breed": "Cross",
-          "Discription": "name",
+          "Breed": breed[1].toString(),
           "Place": addressController.text,
           "City": CityController.text,
           "image": uploadpath,
@@ -164,8 +184,23 @@ class _ReportState extends State<ReportScreen> {
         CityController.text = "";
         ColourController.text = "";
         addressController.text = "";
+        breed = "";
       });
     });
+  }
+
+  checkbreed() async {
+    Uri uri = Uri.parse('http://dogbreeddetection.azurewebsites.net/predict');
+
+    // http.MultipartRequest request = http.MultipartRequest('POST', uri);
+    var request = http.MultipartRequest('POST', uri);
+    request.files
+        .add(await http.MultipartFile.fromPath('image', imagePath!.path));
+    var response = await request.send();
+    responseData = await response.stream.bytesToString();
+    breed = responseData.split("-");
+    // _showmessage(responseData);
+    // _showmessage(breed[1].toString());
   }
 
   _showmessage(String msg) {
