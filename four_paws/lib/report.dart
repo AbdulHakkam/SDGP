@@ -20,7 +20,7 @@ class _ReportState extends State<ReportScreen> {
   FirebaseFirestore firestoreRef = FirebaseFirestore.instance;
   FirebaseStorage strogeRef = FirebaseStorage.instance;
   CollectionReference users = FirebaseFirestore.instance.collection('user');
-  String collectionName = "Dogs";
+  String collectionName = "ReportedDogs";
 
   late String namenote;
   String imageName = "";
@@ -34,6 +34,7 @@ class _ReportState extends State<ReportScreen> {
   var CityController = new TextEditingController();
   var responseData;
   var breed;
+  String breedName = "";
 
   @override
   Widget build(BuildContext context) {
@@ -71,25 +72,35 @@ class _ReportState extends State<ReportScreen> {
                       },
                       child: Text("Select Image")),
                   SizedBox(
-                    height: 15,
+                    height: 5,
                   ),
-                  // OutlinedButton(onPressed: () {}, child: Text("check brred")),
                   SelectedFileName == ""
                       ? Container()
                       : Text(
                           "File Selected",
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
+                  OutlinedButton(
+                      onPressed: () {
+                        checkbreed();
+                      },
+                      child: Text("check breed")),
+                  breedName == ""
+                      ? Container()
+                      : Text(
+                          "Breed : " + breedName,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                   SizedBox(
-                    height: 20,
+                    height: 25,
                   ),
-                  TextFormField(
-                    controller: ColourController,
-                    minLines: 1,
-                    maxLines: 6,
-                    decoration: InputDecoration(
-                        labelText: "Colour", border: OutlineInputBorder()),
-                  ),
+                  // TextFormField(
+                  //   controller: ColourController,
+                  //   minLines: 1,
+                  //   maxLines: 6,
+                  //   decoration: InputDecoration(
+                  //       labelText: "Colour", border: OutlineInputBorder()),
+                  // ),
                   SizedBox(
                     height: 20,
                   ),
@@ -116,8 +127,6 @@ class _ReportState extends State<ReportScreen> {
                   ),
                   ElevatedButton.icon(
                       onPressed: () {
-                        checkbreed();
-
                         if (breed != "") {
                           _uploadImage();
                         } else {
@@ -172,7 +181,7 @@ class _ReportState extends State<ReportScreen> {
           "Place": addressController.text,
           "City": CityController.text,
           "image": uploadpath,
-          "Color": ColourController.text,
+          // "Color": ColourController.text,
         }).then((value) => _showmessage("Succesfully Uploaded"));
       } else {
         _showmessage("Something wrong while uploading!!!!");
@@ -200,7 +209,11 @@ class _ReportState extends State<ReportScreen> {
     responseData = await response.stream.bytesToString();
     breed = responseData.split("-");
     // _showmessage(responseData);
-    // _showmessage(breed[1].toString());
+    _showmessage(breed[1].toString());
+    setState(() {
+      breedName = breed[1].toString();
+    });
+    // breedName = breed[1].toString();
   }
 
   _showmessage(String msg) {

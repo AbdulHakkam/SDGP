@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:four_paws/main.dart';
@@ -14,7 +16,7 @@ class ShelterPage extends StatefulWidget {
 
 class _ShelterScreenState extends State<ShelterPage> {
   FirebaseFirestore firestoreRef = FirebaseFirestore.instance;
-  String collectionName = "Dogs";
+  String collectionName = "ReportedDogs";
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +121,7 @@ class _ShelterScreenState extends State<ShelterPage> {
     );
   }
 
-  Widget tab2() {
+  Widget tab3() {
     return Container(
       child: Center(
         child: Text(
@@ -130,77 +132,98 @@ class _ShelterScreenState extends State<ShelterPage> {
     );
   }
 
-  Widget tab3() {
-    return FutureBuilder<QuerySnapshot>(
-        future: firestoreRef.collection(collectionName).get(),
-        builder: (context, snapshot) {
-          Row(
-            children: [
-              Text(
-                'For You',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          );
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasData && snapshot.data!.docs.length > 0) {
-            List<DocumentSnapshot> arrData = snapshot.data!.docs;
-            return GridView.builder(
-              itemCount: arrData.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.70,
-                //give here mainAxisSpacing and crossAxisSpacing
-                crossAxisSpacing: 20,
-                mainAxisSpacing: 10,
-              ),
-              itemBuilder: (context, index) {
-                return Card(
-                  child: Column(
-                    children: [
-                      Image.network(
-                        arrData[index]['image'],
-                        // height: 100,
-                        // width: 100,
-                        fit: BoxFit.fill,
-                        loadingBuilder: (context, child, loadingProgress) {
-                          if (loadingProgress == null) {
-                            return child;
-                          } else {
-                            return Center(
-                              child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                      : null),
-                            );
-                          }
-                        },
-                      ),
-                      SizedBox(
-                        width: 18,
-                      ),
-                      Text(arrData[index]["Breed"].length > 15
-                          ? arrData[index]["Breed"].substring(0, 15) + "...."
-                          : "Breed : " + arrData[index]["Breed"]),
-                      // Text("\n" + arrData[index]["City"]),
-                    ],
-                  ),
-                );
-              },
-            );
-          } else {
-            return Center(
-              child: Text("No Data Found"),
-            );
-          }
-        });
+  Widget tab2() {
+    return Scaffold(
+      body: SafeArea(
+          child: FutureBuilder<QuerySnapshot>(
+              future: firestoreRef.collection(collectionName).get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasData && snapshot.data!.docs.length > 0) {
+                  List<DocumentSnapshot> arrData = snapshot.data!.docs;
+                  return GridView.builder(
+                    itemCount: arrData.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.70,
+                      //give here mainAxisSpacing and crossAxisSpacing
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 10,
+                    ),
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {},
+                          child: Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Image.network(
+                                    arrData[index]['image'],
+                                    // height: 100,
+                                    // width: 100,
+                                    fit: BoxFit.fill,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      } else {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      loadingProgress
+                                                          .expectedTotalBytes!
+                                                  : null),
+                                        );
+                                      }
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    arrData[index]["Breed"].length > 15
+                                        ? arrData[index]["Breed"]
+                                                .substring(0, 15) +
+                                            "...."
+                                        : "Breed : " + arrData[index]["Breed"],
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  // Text("\n" + arrData[index]["City"]),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return Center(
+                    child: Text(
+                      "No Dogs are Reported to Adopt",
+                      style: DefaultTextStyle.of(context)
+                          .style
+                          .apply(fontSizeFactor: 2.0),
+                    ),
+                  );
+                }
+              })),
+    );
+
+    Future<Void> _showUpDialog(var doc, BuildContext context) {
+      var breedName = new TextEditingController();
+      var cityName = new TextEditingController();
+      var Color = new TextEditingController();
+    }
   }
 }

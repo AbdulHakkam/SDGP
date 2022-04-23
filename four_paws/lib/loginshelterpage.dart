@@ -128,6 +128,8 @@ class _LoginShelterPageState extends State<LoginShelterPage> {
                           content: Text("Email or Password incorrect"),
                           duration: const Duration(seconds: 3),
                         )));
+                _emailTextController.text = "";
+                _passwordTextController.text = "";
                 // print(_emailTextController.text +" " + _passwordTextController.text );
               },
               color: Color(0xff0095FF),
