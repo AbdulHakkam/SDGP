@@ -194,6 +194,7 @@ class _ReportState extends State<ReportScreen> {
         ColourController.text = "";
         addressController.text = "";
         breed = "";
+        breedName = "";
       });
     });
   }
@@ -207,11 +208,13 @@ class _ReportState extends State<ReportScreen> {
         .add(await http.MultipartFile.fromPath('image', imagePath!.path));
     var response = await request.send();
     responseData = await response.stream.bytesToString();
+    print(await response.statusCode);
+
     breed = responseData.split("-");
     // _showmessage(responseData);
-    _showmessage(breed[1].toString());
+    _showmessage("Breed Identified");
     setState(() {
-      breedName = breed[1].toString();
+      breedName = breed[1].toString().toUpperCase();
     });
     // breedName = breed[1].toString();
   }
