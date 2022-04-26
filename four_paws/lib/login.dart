@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:four_paws/adoptreport.dart';
+import 'package:four_paws/loginuserpage.dart';
 import 'package:four_paws/main.dart';
+import 'package:four_paws/shelterpage.dart';
 
-import 'loginpage.dart';
+import 'loginshelterpage.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -57,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
   height: 60,
   onPressed: () {
     Navigator.push(context, MaterialPageRoute(
-        builder: (context) => LoginPage(),),
+        builder: (context) => LoginShelterPage(),),
     );
   },
   color: Colors.white,
@@ -86,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
   height: 60,
   onPressed: () {
     Navigator.push(context, MaterialPageRoute(
-      builder: (context) => LoginPage(),),
+      builder: (context) => LoginUserPage(),),
     );
   },
   color: Color(0xff0095FF),

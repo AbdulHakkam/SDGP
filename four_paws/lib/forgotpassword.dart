@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:four_paws/loginshelterpage.dart';
 
 import 'login.dart';
 
@@ -32,7 +33,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios, color: Colors.black,), onPressed: () {
-          Navigator.pop(context,LoginScreen());
+          Navigator.pop(context,LoginShelterPage());
         },
 
         ),
