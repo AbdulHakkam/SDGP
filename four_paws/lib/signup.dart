@@ -12,6 +12,14 @@ class SignupPage extends StatelessWidget {
   TextEditingController _emailTextController = TextEditingController();
   TextEditingController _usernameTextController = TextEditingController();
   bool _validate = false;
+  bool _isPasswordCharacters = false;
+
+  onPasswordChanged(String password){
+    _isPasswordCharacters = false;
+    if(password.length >= 6)
+      _isPasswordCharacters = true;
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -82,6 +90,7 @@ class SignupPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: TextField(
+                  onChanged: (password) => onPasswordChanged(password),
                   obscureText: true,
                   controller: _passwordTextController,
                   decoration: const InputDecoration(
@@ -90,6 +99,26 @@ class SignupPage extends StatelessWidget {
                     // errorText: _validate ? "Password Can't Be Empty" : null,
                   ),
                 ),
+              ),
+
+              Row(
+                children: [
+                  AnimatedContainer(
+                    duration: Duration(milliseconds: 500),
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: _isPasswordCharacters ? Colors.blue : Colors.transparent,
+                      border:_isPasswordCharacters ? Border.all(color: Colors.transparent) :
+                      Border.all(color: Colors.grey.shade400),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Center(child: Icon(Icons.check,color: Colors.white, size: 15,),),
+                  ),
+                  SizedBox(width : 10,
+                    height: 10,),
+                  Text("Contain at least 6 characters", style: TextStyle(fontSize: 15),)
+                ],
               ),
               Container(
                 child: MaterialButton(
@@ -127,16 +156,6 @@ class SignupPage extends StatelessWidget {
                           color: Colors.white,
                         ))),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("Already have an account?"),
-                  Text(
-                    " Login",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                  )
-                ],
-              )
             ],
           ),
         ),
