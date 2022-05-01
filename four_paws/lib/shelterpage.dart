@@ -47,42 +47,17 @@ class _ShelterScreenState extends State<ShelterPage> {
               fontWeight: FontWeight.w700,
             ),
           ),
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-              padding: EdgeInsets.only(right: 30.0),
-              onPressed: () {},
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.account_circle,
-                color: Colors.white,
-                size: 30,
-              ),
-              padding: EdgeInsets.only(right: 25.0),
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => ShelterProfile(),
-                //   ),
-                // );
-              },
-            )
-          ],
+
           bottom: TabBar(
             indicatorColor: Colors.black,
             tabs: [
               Tab(
-                icon: Icon(
-                  Icons.notifications,
-                  color: Colors.white,
-                ),
-                text: 'Notification',
-              ),
+                  icon: Icon(
+                    Icons.notifications,
+                    color: Colors.white,
+                  ),
+                  text: 'Notification',
+             ),
               Tab(
                 icon: Icon(
                   Icons.add_circle_outline,
@@ -122,6 +97,8 @@ class _ShelterScreenState extends State<ShelterPage> {
     );
   }
 
+
+
   Widget tab3() {
     Future<void> _showUpDialog(List arrData, BuildContext context, var index) {
       var breedName = arrData[index]['Breed'].toString().toUpperCase();
@@ -159,19 +136,27 @@ class _ShelterScreenState extends State<ShelterPage> {
                         }
                       },
                     ),
-                    Text("Breed : " + breedName),
-                    SizedBox(
-                      height: 10,
+                    Container
+                      (
+                      alignment: Alignment.centerLeft,
+                        child: Text("\n" +"Breed : " + breedName, style: TextStyle(fontSize: 17,),)),
+
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: SizedBox(
+                        height: 10,
+                      ),
                     ),
-                    Text("City : " + breedName),
-                    SizedBox(
-                      height: 10,
+                    Text("\n" +"Address : " + address, style: TextStyle(fontSize: 17,),),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: SizedBox(
+                        height: 10,
+                      ),
                     ),
-                    Text("Address : " + address),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("PostCode : " + postCode),
+                    Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text("\n" +"PostCode : " + postCode , style: TextStyle(fontSize: 17,),),),
                   ],
                 ),
                 actions: [
@@ -260,8 +245,8 @@ class _ShelterScreenState extends State<ShelterPage> {
                                         ? arrData[index]["Breed"]
                                                 .substring(0, 8) +
                                             "...."
-                                        : "Breed : " + arrData[index]["Breed"],
-                                    style: TextStyle(fontSize: 20),
+                                        :  arrData[index]["Breed"],
+                                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
                                   ),
                                   // Text("\n" + arrData[index]["City"]),
                                 ],
@@ -485,8 +470,8 @@ class _ShelterScreenState extends State<ShelterPage> {
                                         ? arrData[index]["Breed"]
                                                 .substring(0, 8) +
                                             "...."
-                                        : "Breed : " + arrData[index]["Breed"],
-                                    style: TextStyle(fontSize: 20),
+                                        :  arrData[index]["Breed"],
+                                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                                   ),
                                   // Text("\n" + arrData[index]["City"]),
                                 ],

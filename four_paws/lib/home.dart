@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (BuildContext context) {
           return SingleChildScrollView(
               child: AlertDialog(
-            title: Text("For Adopt"),
+            title: Text("For Adopt", style: TextStyle(fontSize: 20),),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -47,19 +47,35 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                   },
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(arrData[index]["Breed"]),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("\n" +"BREED :" +" "+ " " +arrData[index]["Breed"],style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600),),
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(arrData[index]["City"].toString().toUpperCase()),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("\n" +"CITY :" +" "+ " " +arrData[index]["City"].toString().toUpperCase(), style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600),),
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child:
-                      Text(arrData[index]["Address"].toString().toUpperCase()),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child:
+                        Text("\n" +"ADDRESS :" +" "+ " " +arrData[index]["Address"].toString().toUpperCase(), style: TextStyle(fontSize: 17,fontWeight: FontWeight.w600),),
+                  ),
                 ),
+
+                MaterialButton(
+                  color: kPrimaryColor,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text( "Cancel", style: TextStyle(fontSize: 17, color:Colors.black, ),),),
               ],
             ),
           ));
@@ -82,12 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
-          actions: [
-            IconButton(icon: Icon(Icons.search), onPressed: () {}),
-            CircleAvatar(
-              backgroundColor: kPrimaryColor,
-            )
-          ],
         ),
         body: FutureBuilder<QuerySnapshot>(
             future: firestoreRef.collection("AdoptedDogs").get(),
@@ -147,7 +157,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Text(arrData[index]["Breed"].length > 15
                                   ? arrData[index]["Breed"].substring(0, 15) +
                                       "...."
-                                  : "Breed : " + arrData[index]["Breed"]),
+                                  :  arrData[index]["Breed"], style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600),),
                               // Text("\n" + arrData[index]["City"]),
                             ],
                           ),
