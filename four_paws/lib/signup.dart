@@ -14,12 +14,10 @@ class SignupPage extends StatelessWidget {
   bool _validate = false;
   bool _isPasswordCharacters = false;
 
-  onPasswordChanged(String password){
+  onPasswordChanged(String password) {
     _isPasswordCharacters = false;
-    if(password.length >= 6)
-      _isPasswordCharacters = true;
+    if (password.length >= 6) _isPasswordCharacters = true;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +98,6 @@ class SignupPage extends StatelessWidget {
                   ),
                 ),
               ),
-
               Row(
                 children: [
                   AnimatedContainer(
@@ -108,16 +105,30 @@ class SignupPage extends StatelessWidget {
                     width: 20,
                     height: 20,
                     decoration: BoxDecoration(
-                      color: _isPasswordCharacters ? Colors.blue : Colors.transparent,
-                      border:_isPasswordCharacters ? Border.all(color: Colors.transparent) :
-                      Border.all(color: Colors.grey.shade400),
+                      color: _isPasswordCharacters
+                          ? Colors.blue
+                          : Colors.transparent,
+                      border: _isPasswordCharacters
+                          ? Border.all(color: Colors.transparent)
+                          : Border.all(color: Colors.grey.shade400),
                       borderRadius: BorderRadius.circular(50),
                     ),
-                    child: Center(child: Icon(Icons.check,color: Colors.white, size: 15,),),
+                    child: Center(
+                      child: Icon(
+                        Icons.check,
+                        color: Colors.white,
+                        size: 15,
+                      ),
+                    ),
                   ),
-                  SizedBox(width : 10,
-                    height: 10,),
-                  Text("Contain at least 6 characters", style: TextStyle(fontSize: 15),)
+                  SizedBox(
+                    width: 10,
+                    height: 10,
+                  ),
+                  Text(
+                    "Contain at least 6 characters",
+                    style: TextStyle(fontSize: 15),
+                  )
                 ],
               ),
               Container(

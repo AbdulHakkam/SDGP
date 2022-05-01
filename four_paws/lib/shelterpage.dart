@@ -64,12 +64,12 @@ class _ShelterScreenState extends State<ShelterPage> {
               ),
               padding: EdgeInsets.only(right: 25.0),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ShelterProfile(),
-                  ),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => ShelterProfile(),
+                //   ),
+                // );
               },
             )
           ],
@@ -124,10 +124,10 @@ class _ShelterScreenState extends State<ShelterPage> {
 
   Widget tab3() {
     Future<void> _showUpDialog(List arrData, BuildContext context, var index) {
-      var breedName = new TextEditingController(
-          text: arrData[index]['Breed'].toString().toUpperCase());
-      var cityName = new TextEditingController(text: arrData[index]['City']);
-      var address = new TextEditingController(text: arrData[index]['Place']);
+      var breedName = arrData[index]['Breed'].toString().toUpperCase();
+      var cityName = arrData[index]['City'];
+      var address = arrData[index]['Address'];
+      var postCode = arrData[index]['PostCode'];
 
       return showDialog<void>(
           context: context,
@@ -140,7 +140,7 @@ class _ShelterScreenState extends State<ShelterPage> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.network(
-                      arrData[index]['image'],
+                      arrData[index]['Image'],
                       // height: 100,
                       // width: 100,
                       fit: BoxFit.fill,
@@ -159,27 +159,19 @@ class _ShelterScreenState extends State<ShelterPage> {
                         }
                       },
                     ),
-                    TextField(
-                      controller: breedName,
-                      decoration: const InputDecoration(
-                          icon: Icon(Icons.scanner), labelText: "Breed"),
-                    ),
+                    Text("Breed : " + breedName),
                     SizedBox(
                       height: 10,
                     ),
-                    TextField(
-                      controller: cityName,
-                      decoration: const InputDecoration(
-                          icon: Icon(Icons.scanner), labelText: "City"),
-                    ),
+                    Text("City : " + breedName),
                     SizedBox(
                       height: 10,
                     ),
-                    TextField(
-                      controller: address,
-                      decoration: const InputDecoration(
-                          icon: Icon(Icons.scanner), labelText: "Address"),
+                    Text("Address : " + address),
+                    SizedBox(
+                      height: 10,
                     ),
+                    Text("PostCode : " + postCode),
                   ],
                 ),
                 actions: [
@@ -197,7 +189,7 @@ class _ShelterScreenState extends State<ShelterPage> {
     return Scaffold(
       body: SafeArea(
           child: FutureBuilder<QuerySnapshot>(
-              future: firestoreRef.collection(collectionName).get(),
+              future: firestoreRef.collection("AdoptedDogs").get(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -219,7 +211,7 @@ class _ShelterScreenState extends State<ShelterPage> {
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
                           onTap: () {
-                            // print(arrData[index].id);
+                            print(arrData[index].id);
                             _showUpDialog(arrData, context, index);
                             // printId(arrData, index);
                           },
@@ -227,31 +219,39 @@ class _ShelterScreenState extends State<ShelterPage> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
-                                children: [
-                                  Image.network(
-                                    arrData[index]['image'],
-                                    // height: 100,
-                                    // width: 100,
-                                    fit: BoxFit.fill,
-                                    loadingBuilder:
-                                        (context, child, loadingProgress) {
-                                      if (loadingProgress == null) {
-                                        return child;
-                                      } else {
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                              value: loadingProgress
-                                                          .expectedTotalBytes !=
-                                                      null
-                                                  ? loadingProgress
-                                                          .cumulativeBytesLoaded /
-                                                      loadingProgress
-                                                          .expectedTotalBytes!
-                                                  : null),
-                                        );
-                                      }
-                                    },
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: <Widget>[
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(8.0),
+                                      topRight: Radius.circular(8.0),
+                                    ),
+                                    child: Image.network(
+                                      arrData[index]['Image'],
+                                      height: 180,
+                                      // width: 100,
+                                      fit: BoxFit.fill,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                                value: loadingProgress
+                                                            .expectedTotalBytes !=
+                                                        null
+                                                    ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes!
+                                                    : null),
+                                          );
+                                        }
+                                      },
+                                    ),
                                   ),
+
                                   SizedBox(
                                     width: 20,
                                   ),
@@ -287,22 +287,28 @@ class _ShelterScreenState extends State<ShelterPage> {
   }
 
   Widget tab2() {
-    printId(List arrData, var index) {
-      print(arrData[index].id);
-      print(arrData[index]['City']);
-    }
+    // printId(List arrData, var index) {
+    //   print(arrData[index].id);
+    //   print(arrData[index]['City']);
+    // }
 
-    updateDate(var breed, var city, var address, var image) {
+    updateDate(var breed, var city, var address, var image, var postcode) {
       setState(() {});
       var uniqueKey = firestoreRef.collection("AdoptedDogs").doc();
       firestoreRef.collection("AdoptedDogs").doc(uniqueKey.id).set({
         "Breed": breed,
         "City": city,
         "Address": address,
-        "Image": image
+        "Image": image,
+        "PostCode": postcode,
       }).then((value) => ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Push to Adopt"))));
+
       Navigator.of(context).pop();
+    }
+
+    Future<void> Deleteata(String id) {
+      return firestoreRef.collection("ReportedDogs").doc(id).delete();
     }
 
     Future<void> _showUpDialog(List arrData, BuildContext context, var index) {
@@ -310,7 +316,8 @@ class _ShelterScreenState extends State<ShelterPage> {
           text: arrData[index]['Breed'].toString().toUpperCase());
       var cityName = new TextEditingController(text: arrData[index]['City']);
       var address = new TextEditingController(text: arrData[index]['Place']);
-
+      var postcode =
+          new TextEditingController(text: arrData[index]['PostCode']);
       return showDialog<void>(
           context: context,
           barrierDismissible: false,
@@ -341,6 +348,7 @@ class _ShelterScreenState extends State<ShelterPage> {
                         }
                       },
                     ),
+                    // Text(arrData[index].id),
                     TextFormField(
                       controller: breedName,
                       decoration: const InputDecoration(
@@ -362,6 +370,14 @@ class _ShelterScreenState extends State<ShelterPage> {
                       decoration: const InputDecoration(
                           icon: Icon(Icons.scanner), labelText: "Address"),
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    TextFormField(
+                      controller: postcode,
+                      decoration: const InputDecoration(
+                          icon: Icon(Icons.scanner), labelText: "PostCode"),
+                    ),
                   ],
                 ),
                 actions: [
@@ -376,8 +392,13 @@ class _ShelterScreenState extends State<ShelterPage> {
                             address.text.isNotEmpty &&
                             cityName.text.isNotEmpty) {
                           // print(arrData[index]['image']);
-                          updateDate(breedName.text, cityName.text,
-                              address.text, arrData[index]["image"]);
+                          updateDate(
+                              breedName.text,
+                              cityName.text,
+                              address.text,
+                              arrData[index]["image"],
+                              postcode.text);
+                          Deleteata(arrData[index].id);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("Please Fill all the fields")));
@@ -393,7 +414,7 @@ class _ShelterScreenState extends State<ShelterPage> {
     return Scaffold(
       body: SafeArea(
           child: FutureBuilder<QuerySnapshot>(
-              future: firestoreRef.collection(collectionName).get(),
+              future: firestoreRef.collection("ReportedDogs").get(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
@@ -417,36 +438,44 @@ class _ShelterScreenState extends State<ShelterPage> {
                           onTap: () {
                             // print(arrData[index].id);
                             _showUpDialog(arrData, context, index);
+
                             // printId(arrData, index);
                           },
                           child: Card(
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
-                                children: [
-                                  Image.network(
-                                    arrData[index]['image'],
-                                    // height: 100,
-                                    // width: 100,
-                                    fit: BoxFit.fill,
-                                    loadingBuilder:
-                                        (context, child, loadingProgress) {
-                                      if (loadingProgress == null) {
-                                        return child;
-                                      } else {
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                              value: loadingProgress
-                                                          .expectedTotalBytes !=
-                                                      null
-                                                  ? loadingProgress
-                                                          .cumulativeBytesLoaded /
-                                                      loadingProgress
-                                                          .expectedTotalBytes!
-                                                  : null),
-                                        );
-                                      }
-                                    },
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: <Widget>[
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(8.0),
+                                      topRight: Radius.circular(8.0),
+                                    ),
+                                    child: Image.network(
+                                      arrData[index]['image'],
+                                      height: 180,
+                                      // width: 100,
+                                      fit: BoxFit.fill,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                                value: loadingProgress
+                                                            .expectedTotalBytes !=
+                                                        null
+                                                    ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes!
+                                                    : null),
+                                          );
+                                        }
+                                      },
+                                    ),
                                   ),
                                   SizedBox(
                                     width: 20,

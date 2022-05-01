@@ -7,9 +7,12 @@ import 'package:four_paws/body.dart';
 import 'package:four_paws/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:four_paws/geo.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
+import 'package:geolocator/geolocator.dart';
 
 class ReportScreen extends StatefulWidget {
   @override
@@ -29,12 +32,19 @@ class _ReportState extends State<ReportScreen> {
   final ImagePicker _picker = ImagePicker();
   String SelectedFileName = "";
   bool _isloading = false;
-  var addressController = new TextEditingController();
-  var ColourController = new TextEditingController();
-  var CityController = new TextEditingController();
+  // var addressController = new TextEditingController();
+  // var ColourController = new TextEditingController();
+  // var CityController = new TextEditingController();
   var responseData;
   var breed;
   String breedName = "";
+  String lati = "";
+  String longi = "";
+  String address = "";
+  String postcode = "";
+  String City = "";
+
+  late Position posi;
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +78,7 @@ class _ReportState extends State<ReportScreen> {
                   imageName == "" ? Container() : Text("${imageName}"),
                   OutlinedButton(
                       onPressed: () {
+                        _getadress();
                         imagePicker();
                       },
                       child: Text("Select Image")),
@@ -94,36 +105,29 @@ class _ReportState extends State<ReportScreen> {
                   SizedBox(
                     height: 25,
                   ),
-                  // TextFormField(
-                  //   controller: ColourController,
-                  //   minLines: 1,
-                  //   maxLines: 6,
-                  //   decoration: InputDecoration(
-                  //       labelText: "Colour", border: OutlineInputBorder()),
-                  // ),
                   SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    controller: CityController,
-                    minLines: 1,
-                    maxLines: 6,
-                    decoration: InputDecoration(
-                        labelText: "Finding City",
-                        border: OutlineInputBorder()),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    controller: addressController,
-                    minLines: 1,
-                    maxLines: 6,
-                    decoration: InputDecoration(
-                        labelText: "Address", border: OutlineInputBorder()),
-                  ),
-                  SizedBox(
-                    height: 20,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        children: [
+                          lati == ""
+                              ? Container()
+                              : Text("Latitude : " + lati,
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                          longi == ""
+                              ? Container()
+                              : Text("Longitude : " + longi,
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                          address == ""
+                              ? Container()
+                              : Text("Address : " + address,
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ),
                   ),
                   ElevatedButton.icon(
                       onPressed: () {
@@ -136,10 +140,7 @@ class _ReportState extends State<ReportScreen> {
                       icon: Icon(Icons.cloud_upload),
                       label: Text("Upload Image"))
                 ]),
-        )
-            //app menu
-            // drawer: Drawer(),
-            ));
+        )));
   }
 
   imagePicker() async {
@@ -172,15 +173,18 @@ class _ReportState extends State<ReportScreen> {
     });
 
     await uploadTask.whenComplete(() async {
+      DateTime currentPhoneDate = DateTime.now(); //DateTime
       var uploadpath = await uploadTask.snapshot.ref.getDownloadURL();
       print(uploadpath);
       // insert record to the database regarding url and image
       if (uploadpath.isNotEmpty) {
         firestoreRef.collection(collectionName).doc(uniqueKey.id).set({
           "Breed": breed[1].toString(),
-          "Place": addressController.text,
-          "City": CityController.text,
+          "Place": address,
+          "City": City,
           "image": uploadpath,
+          "PostCode": postcode,
+          "TimeStamp": currentPhoneDate,
           // "Color": ColourController.text,
         }).then((value) => _showmessage("Succesfully Uploaded"));
       } else {
@@ -190,11 +194,13 @@ class _ReportState extends State<ReportScreen> {
         _isloading = false;
         imageName = "";
         SelectedFileName = "";
-        CityController.text = "";
-        ColourController.text = "";
-        addressController.text = "";
+        City = "";
+        address = "";
+        postcode = "";
         breed = "";
         breedName = "";
+        lati = "";
+        longi = "";
       });
     });
   }
@@ -224,5 +230,30 @@ class _ReportState extends State<ReportScreen> {
       content: Text(msg),
       duration: const Duration(seconds: 3),
     ));
+  }
+
+  _getadress() async {
+    geo geo1 = new geo();
+    posi = await geo1.getlat();
+    // print("lati : ${posi.latitude} ");
+    lati = "${posi.latitude}";
+    longi = "${posi.longitude}";
+    // longi = "${posi.longitude}";
+    // print(lati);
+    getadress(posi);
+  }
+
+  Future<void> getadress(Position position) async {
+    List<Placemark> plackmark =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    Placemark place = plackmark[0];
+    // print(plackmark[0]);
+    address =
+        '${place.street}, ${place.subLocality}, ${place.locality}, ${place.country}';
+    City = '${place.locality}';
+    postcode = '${place.postalCode}';
+    print(City);
+    print(postcode);
+    setState(() {});
   }
 }
