@@ -2,13 +2,8 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:four_paws/adoptreport.dart';
 import 'package:four_paws/home.dart';
-import 'package:four_paws/login.dart';
-import 'package:four_paws/loginshelterpage.dart';
 import 'package:four_paws/settings.dart';
-import 'package:four_paws/shelterpage.dart';
-import 'package:four_paws/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -26,7 +21,7 @@ void main() async {
       )),
       //primarySwatch: Colors.blue;
     ),
-    home: HomePage(),
+    home: HomeScreen(),
   ));
 }
 
@@ -85,10 +80,7 @@ class HomePage extends StatelessWidget {
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LoginScreen()));
+
                     },
                     //defining the shape
                     shape: RoundedRectangleBorder(
@@ -106,10 +98,7 @@ class HomePage extends StatelessWidget {
                       minWidth: double.infinity,
                       height: 60,
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SignupPage()));
+
                       },
                       color: Color(0xff0095FF),
                       shape: RoundedRectangleBorder(
